@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+      routes:
+        - id: contact-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/contact/**
+        - id: quote-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/quote/**
+
+      default-filters:
+        - AddResponseHeader=Access-Control-Allow-Origin, *
+        - AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
