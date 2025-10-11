@@ -19,25 +19,24 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
 
-      routes:
-        - id: contact-service
-          uri: lb://contact-service
-          predicates:
-            - Path=/api/contact/**
-        - id: quote-service
-          uri: lb://quote-service
-          predicates:
-            - Path=/api/quote/**
-
       default-filters:
         - AddResponseHeader=Access-Control-Allow-Origin, *
         - AddResponseHeader=Access-Control-Allow-Methods, GET,POST,PUT,DELETE,OPTIONS
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
+        - name: CircuitBreaker
+          args:
+            name: globalCircuitBreaker
+            fallbackUri: forward:/fallback/global
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      globalCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        automaticTransitionFromOpenToHalfOpenEnabled: true

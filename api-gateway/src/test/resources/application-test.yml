@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: api-gateway-test
+  main:
+    web-application-type: none
+    allow-bean-definition-overriding: true
+  cloud:
+    discovery:
+      enabled: false
+    gateway:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
+  instance:
+    prefer-ip-address: false
