@@ -5,8 +5,15 @@ spring:
   application:
     name: api-gateway
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   cloud:
     gateway:
+      redis:
+        enabled: true
       discovery:
         locator:
           enabled: true
@@ -26,6 +33,12 @@ spring:
           args:
             name: globalCircuitBreaker
             fallbackUri: forward:/fallback/global
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 5
+            redis-rate-limiter.burstCapacity: 10
+            key-resolver: "#{@ipKeyResolver}"
+
 
 eureka:
   client:
@@ -40,3 +53,7 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
         automaticTransitionFromOpenToHalfOpenEnabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
