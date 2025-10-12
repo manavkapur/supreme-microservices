@@ -18,9 +18,24 @@ spring:
 server:
   port: 8084
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-
+info:
+  app:
+    name: ${spring.application.name}
+    description: User Service for Supreme Solutions
+    version: 1.0.0
+    author: Manav Kapur
