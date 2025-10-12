@@ -2,9 +2,13 @@ package com.supremesolutions.contact.service;
 
 import com.supremesolutions.contact.model.ContactMessage;
 import com.supremesolutions.contact.repository.ContactRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -16,8 +20,23 @@ public class ContactService {
         this.contactRepository = contactRepository;
     }
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     public ContactMessage save(ContactMessage contactMessage) {
-        return contactRepository.save(contactMessage);
+
+        ContactMessage saved = contactRepository.save(contactMessage);
+
+        Map<String, Object> event = new HashMap<>();
+        event.put("type", "CONTACT_CREATED");
+        event.put("contactId", saved.getId());
+        event.put("name", saved.getName());
+        event.put("email", saved.getEmail());
+        event.put("message", saved.getMessage());
+
+        redisTemplate.convertAndSend("contact-events", event);
+
+        return saved;
     }
 
     public List<ContactMessage> findAll() {
