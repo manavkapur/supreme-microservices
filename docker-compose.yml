@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7
+    container_name: dev_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: dev_redisinsight
+    ports:
+      - "8001:5540"
+    environment:
+      - RI_HOST=0.0.0.0
+    depends_on:
+      - redis
+    restart: always
