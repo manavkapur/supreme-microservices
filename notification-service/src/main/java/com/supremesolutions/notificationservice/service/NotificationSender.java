@@ -1,74 +1,57 @@
 package com.supremesolutions.notificationservice.service;
 
-import com.supremesolutions.notificationservice.dto.FcmMessage;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import com.supremesolutions.notificationservice.dto.NotificationEvent;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.scheduler.Schedulers;
-
-import java.util.Map;
-import java.util.HashMap;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class NotificationSender {
 
     private final UserClient userClient;
-    private final WebClient webClient;
-    private final String fcmServerKey;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    public NotificationSender(UserClient userClient, WebClient webClient,
-                              @Value("${fcm.server-key:}") String fcmServerKey) {
+    public NotificationSender(UserClient userClient) {
         this.userClient = userClient;
-        this.webClient = webClient;
-        this.fcmServerKey = fcmServerKey;
     }
 
     public void handleEvent(NotificationEvent ev) {
-        // fetch token
         userClient.fetchFcmToken(ev.getUserId())
                 .subscribeOn(Schedulers.boundedElastic())
                 .subscribe(token -> {
                     if (token == null || token.isEmpty()) {
-                        // no token -> optionally store / log for later or send email
-                        System.out.println("No FCM token for userId=" + ev.getUserId());
+                        System.out.println("⚠️ No FCM token for userId=" + ev.getUserId());
                         return;
                     }
-
                     sendPush(token, ev.getTitle(), ev.getBody(), ev.getPayload());
-                }, err -> {
-                    err.printStackTrace();
-                });
+                }, Throwable::printStackTrace);
     }
 
     private void sendPush(String token, String title, String body, Object payload) {
-        if (fcmServerKey == null || fcmServerKey.isBlank()) {
-            System.err.println("FCM server key not configured - cannot send push");
-            return;
+        try {
+            Notification notification = Notification.builder()
+                    .setTitle(title != null ? title : "Update")
+                    .setBody(body != null ? body : "")
+                    .build();
+
+            Message.Builder messageBuilder = Message.builder()
+                    .setToken(token)
+                    .setNotification(notification);
+
+            if (payload != null) {
+                messageBuilder.putData("payload", mapper.writeValueAsString(payload));
+            }
+
+            Message message = messageBuilder.build();
+
+            String response = FirebaseMessaging.getInstance().send(message);
+            System.out.println("✅ Sent FCM message: " + response);
+        } catch (Exception e) {
+            System.err.println("❌ FCM send error:");
+            e.printStackTrace();
         }
-
-        FcmMessage msg = new FcmMessage();
-        msg.setTo(token);
-        msg.setNotification(new FcmMessage.Notification(title != null ? title : "Update",
-                body != null ? body : ""));
-        // attach payload as data
-        Map<String, Object> data = new HashMap<>();
-        if (payload != null) data.put("payload", payload);
-        msg.setData(data);
-
-        webClient.post()
-                .uri("https://fcm.googleapis.com/fcm/send")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "key=" + fcmServerKey)
-                .bodyValue(msg)
-                .retrieve()
-                .bodyToMono(String.class)
-                .subscribe(resp -> {
-                    System.out.println("FCM resp: " + resp);
-                }, err -> {
-                    System.err.println("FCM error: ");
-                    err.printStackTrace();
-                });
     }
 }

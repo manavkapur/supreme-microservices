@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: notification-service
-
   data:
     redis:
       host: localhost
@@ -15,11 +14,5 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-# base URL for user-service (used by UserClient)
 user-service:
   base-url: http://localhost:8084
-
-# FCM server key for legacy API method (dev).
-# For production use FCM v1 with Google OAuth2/service account token.
-fcm:
-  server-key: "AAAA...YOUR_FCM_SERVER_KEY_HERE..."
