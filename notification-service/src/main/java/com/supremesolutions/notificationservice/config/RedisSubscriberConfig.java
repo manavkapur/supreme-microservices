@@ -1,6 +1,6 @@
 package com.supremesolutions.notificationservice.config;
 
-import com.supremesolutions.notificationservice.listener.NotificationEventSubscriber;
+import com.supremesolutions.notificationservice.listener.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

@@ -4,18 +4,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="" />
+    <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/FirebaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/FirebaseConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/RedisSubscriberConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/RedisSubscriberConfig.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="344Wqtdv1MzHyFiZlO3JS3PrDet" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/manavkapur/Documents/supreme-solutions/supreme-microservices/channel-server"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config" />
     </key>
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="" />
+      <created>1760473519029</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760473519029</updated>
+    </task>
     <servers />
   </component>
 </project>

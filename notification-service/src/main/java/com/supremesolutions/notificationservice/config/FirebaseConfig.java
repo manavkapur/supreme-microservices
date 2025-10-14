@@ -1,4 +1,4 @@
-package com.supremesolutions.notification_server.config;
+package com.supremesolutions.notificationservice.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
