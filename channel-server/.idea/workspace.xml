@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/FirebaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/FirebaseConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/RedisSubscriberConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/RedisSubscriberConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/supremesolutions/config/RateLimiterConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/supremesolutions/controller/FallbackController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,23 +28,23 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="344Wqtdv1MzHyFiZlO3JS3PrDet" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/manavkapur/Documents/supreme-solutions/supreme-microservices/channel-server"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/manavkapur/Documents/supreme-solutions/supreme-microservices/channel-server&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config" />
