@@ -11,12 +11,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // disable CSRF for WebSocket
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/ws/**").permitAll() // ✅ allow WebSocket connections
-                        .anyRequest().permitAll()
-                )
-                .headers(headers -> headers.frameOptions(frame -> frame.disable())); // for H2 or UI
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
 }
