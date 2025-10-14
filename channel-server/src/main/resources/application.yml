@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: channel-server
+
+  data:
+    redis:
+      host: localhost       # use 'redis' if running inside docker-compose
+      port: 6379
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
