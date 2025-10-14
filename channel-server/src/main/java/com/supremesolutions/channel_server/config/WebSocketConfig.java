@@ -1,32 +1,23 @@
 package com.supremesolutions.channel_server.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+
+import com.supremesolutions.channel_server.websocket.EventWebSocketHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+@EnableWebSocket
+public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final WebSocketAuthHandshakeInterceptor handshakeInterceptor;
-
-    public WebSocketConfig(WebSocketAuthHandshakeInterceptor handshakeInterceptor) {
-        this.handshakeInterceptor = handshakeInterceptor;
-    }
+    @Autowired
+    private EventWebSocketHandler eventWebSocketHandler;
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
-                .addInterceptors(handshakeInterceptor)
-                .setHandshakeHandler(new UserPrincipalHandshakeHandler()) // 👈 important line
-                .withSockJS();
-    }
-
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic", "/queue", "/user");
-        registry.setApplicationDestinationPrefixes("/app");
-        registry.setUserDestinationPrefix("/user");
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(eventWebSocketHandler, "/ws/events")
+                .setAllowedOriginPatterns("*"); // allow all origins for testing
     }
 }

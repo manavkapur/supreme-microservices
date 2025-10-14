@@ -2,7 +2,6 @@ package com.supremesolutions.channel_server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -10,19 +9,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // ✅ New syntax for disabling CSRF in Spring Security 6.3+
-                .csrf(csrf -> csrf.disable())
-                // ✅ New request authorization DSL
+                .csrf(csrf -> csrf.disable()) // disable CSRF for WebSocket
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/ws/**", "/actuator/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll() // ✅ allow WebSocket connections
                         .anyRequest().permitAll()
                 )
-                // optional: disable default login form if not needed
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
-
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())); // for H2 or UI
         return http.build();
     }
 }
