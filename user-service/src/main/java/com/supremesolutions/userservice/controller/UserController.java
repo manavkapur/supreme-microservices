@@ -5,6 +5,7 @@ import com.supremesolutions.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.supremesolutions.userservice.util.JwtUtil;
 
 import java.util.Map;
 
@@ -39,4 +40,23 @@ public class UserController {
                 .<ResponseEntity<?>>map(token -> ResponseEntity.ok(Map.of("fcmToken", token)))
                 .orElse(ResponseEntity.status(404).body(Map.of("error", "User not found")));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        User user = userService.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
+        }
+
+        if (!userService.matchesPassword(password, user.getPassword())) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
+        }
+
+        String token = JwtUtil.generateToken(email);
+        return ResponseEntity.ok(Map.of("token", token, "userId", user.getId(), "email", user.getEmail()));
+    }
+
 }

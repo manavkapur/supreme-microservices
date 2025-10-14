@@ -86,6 +86,11 @@
             <version>8.0.33</version> <!-- ✅ Add version here -->
             <scope>runtime</scope>
         </dependency>
+        <!-- Add this for password encryption -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <!-- ✅ JWT (Manually add these) -->
         <dependency>
