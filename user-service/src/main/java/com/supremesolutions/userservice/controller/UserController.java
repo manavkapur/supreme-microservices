@@ -1,6 +1,6 @@
 package com.supremesolutions.userservice.controller;
 
-import com.supremesolutions.userservice.model.User;
+import com.supremesolutions.userservice.entity.User;
 import com.supremesolutions.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
