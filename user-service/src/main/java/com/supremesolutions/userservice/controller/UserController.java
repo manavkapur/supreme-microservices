@@ -1,0 +1,42 @@
+package com.supremesolutions.userservice.controller;
+
+import com.supremesolutions.userservice.model.User;
+import com.supremesolutions.userservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
+
+    @PostMapping("/register-fcm")
+    public ResponseEntity<?> registerFcm(@RequestBody Map<String, String> body) {
+        Long userId = Long.parseLong(body.get("userId"));
+        String fcmToken = body.get("fcmToken");
+
+        boolean updated = userService.registerFcmToken(userId, fcmToken);
+        if (updated) {
+            return ResponseEntity.ok(Map.of("status", "success", "message", "FCM token registered"));
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "User not found"));
+        }
+    }
+
+    @GetMapping("/fcm-token/{userId}")
+    public ResponseEntity<?> getFcmToken(@PathVariable Long userId) {
+        return userService.getFcmToken(userId)
+                .<ResponseEntity<?>>map(token -> ResponseEntity.ok(Map.of("fcmToken", token)))
+                .orElse(ResponseEntity.status(404).body(Map.of("error", "User not found")));
+    }
+}
