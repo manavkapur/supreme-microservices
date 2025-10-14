@@ -11,16 +11,23 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 public class RedisSubscriberConfig {
 
     @Bean
-    RedisMessageListenerContainer redisContainer(RedisConnectionFactory connectionFactory,
-                                                 RedisEventSubscriber subscriber) {
+    RedisMessageListenerContainer redisContainer(
+            RedisConnectionFactory connectionFactory,
+            RedisEventSubscriber subscriber) {
+
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
 
-        // Subscribe to both contact and quote updates
+        // Subscribe to core event channels
         container.addMessageListener(subscriber, new ChannelTopic("contact-updates"));
         container.addMessageListener(subscriber, new ChannelTopic("quote-updates"));
 
         System.out.println("✅ Subscribed to [contact-updates, quote-updates]");
         return container;
+    }
+
+    @Bean
+    public ChannelTopic notificationTopic() {
+        return new ChannelTopic("notification-events");
     }
 }
