@@ -20,7 +20,7 @@ public class RedisSubscriberConfig {
 
         // Subscribe to core event channels
         container.addMessageListener(subscriber, new ChannelTopic("contact-updates"));
-        container.addMessageListener(subscriber, new ChannelTopic("quote-updates"));
+        container.addMessageListener(subscriber, new ChannelTopic("quote-events"));
 
         System.out.println("✅ Subscribed to [contact-updates, quote-updates]");
         return container;

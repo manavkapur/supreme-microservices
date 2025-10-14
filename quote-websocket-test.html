@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Event Listener</title>
+</head>
+<body>
+  <h2>🛰️ Quote Event Listener</h2>
+  <p>Open the browser console to see incoming events.</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <script>
+    // Connect to your Channel Server (running on port 8085)
+    const socket = new SockJS("http://localhost:8083/ws");
+    const client = Stomp.over(socket);
+
+    client.connect({}, () => {
+      console.log("✅ Connected to WebSocket at /ws");
+      client.subscribe("/topic/quotes", (msg) => {
+        console.log("📩 Quote Event Received:", msg.body);
+      });
+    }, (error) => {
+      console.error("❌ WebSocket connection failed:", error);
+    });
+  </script>
+</body>
+</html>

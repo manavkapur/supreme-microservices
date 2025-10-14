@@ -1,4 +1,4 @@
-package com.supremesolutions.notification.listener;
+package com.supremesolutions.channel_server.listener;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;

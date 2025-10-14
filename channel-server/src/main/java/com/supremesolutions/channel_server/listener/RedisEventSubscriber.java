@@ -25,7 +25,7 @@ public class RedisEventSubscriber implements MessageListener {
 
         switch (channel) {
             case "contact-updates" -> handleContactEvent(body);
-            case "quote-updates" -> handleQuoteEvent(body);
+            case "quote-events" -> handleQuoteEvent(body);
             default -> System.out.println("⚠️ Unhandled channel: " + channel);
         }
     }
