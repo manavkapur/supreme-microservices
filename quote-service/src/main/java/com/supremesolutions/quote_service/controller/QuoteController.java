@@ -1,44 +1,25 @@
 package com.supremesolutions.quote_service.controller;
 
-import com.supremesolutions.quote_service.model.Quote;
+import com.supremesolutions.quote_service.entity.Quote;
 import com.supremesolutions.quote_service.service.QuoteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/quote")
+@RequestMapping("/api/quotes")
+@RequiredArgsConstructor
 public class QuoteController {
 
     private final QuoteService quoteService;
 
-    public QuoteController(QuoteService quoteService) {
-        this.quoteService = quoteService;
+    @PostMapping("/create")
+    public ResponseEntity<Quote> createQuote(@RequestBody Quote quote) {
+        return ResponseEntity.ok(quoteService.createQuote(quote));
     }
 
-    @GetMapping
-    public List<Quote> getAllQuotes() {
-        return quoteService.getAllQuotes();
-    }
-
-    @GetMapping("/{id}")
-    public Quote getQuoteById(@PathVariable Long id) {
-        return quoteService.getQuoteById(id)
-                .orElseThrow(() -> new RuntimeException("Quote not found with id " + id));
-    }
-
-    @PostMapping
-    public Quote addQuote(@RequestBody Quote quote) {
-        return quoteService.addQuote(quote);
-    }
-
-    @PutMapping("/{id}")
-    public Quote updateQuote(@PathVariable Long id, @RequestBody Quote updatedQuote) {
-        return quoteService.updateQuote(id, updatedQuote);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteQuote(@PathVariable Long id) {
-        quoteService.deleteQuote(id);
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Quote> updateStatus(@PathVariable Long id, @RequestParam String status) {
+        return ResponseEntity.ok(quoteService.updateStatus(id, status));
     }
 }
