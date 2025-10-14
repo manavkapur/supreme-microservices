@@ -1,11 +1,12 @@
-package com.supremesolutions.notificationservice.config;
+package com.supremesolutions.notification_server.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.context.annotation.Configuration;
+
 import jakarta.annotation.PostConstruct;
-import java.io.InputStream;
+import java.io.FileInputStream;
 
 @Configuration
 public class FirebaseConfig {
@@ -13,13 +14,8 @@ public class FirebaseConfig {
     @PostConstruct
     public void init() {
         try {
-            // load service-account JSON from classpath
-            InputStream serviceAccount =
-                    getClass().getClassLoader().getResourceAsStream("firebase-service-account.json");
-
-            if (serviceAccount == null) {
-                throw new IllegalStateException("Firebase service account file not found in resources!");
-            }
+            FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/firebase-service-account.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -27,10 +23,12 @@ public class FirebaseConfig {
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
-                System.out.println("✅ Firebase initialized successfully");
+                System.out.println("🔥 Firebase initialized successfully!");
+            } else {
+                System.out.println("Firebase already initialized.");
             }
         } catch (Exception e) {
-            throw new RuntimeException("❌ Failed to initialize Firebase", e);
+            System.err.println("⚠️ Failed to initialize Firebase: " + e.getMessage());
         }
     }
 }

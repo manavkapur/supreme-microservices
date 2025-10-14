@@ -1,18 +1,16 @@
-server:
-  port: 8090
-
 spring:
   application:
     name: notification-service
+
   data:
     redis:
       host: localhost
       port: 6379
 
+server:
+  port: 8085
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-user-service:
-  base-url: http://localhost:8084
+      defaultZone: http://localhost:8761/eureka
