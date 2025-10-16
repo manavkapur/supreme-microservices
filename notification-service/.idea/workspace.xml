@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b890e1ef-6acc-43e1-ab3f-8eb3a3ac2f38" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/supremesolutions/config/RateLimiterConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/java/com/supremesolutions/controller/FallbackController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../channel-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/resources/application.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="b890e1ef-6acc-43e1-ab3f-8eb3a3ac2f38" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,7 +40,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Jwt-setup",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/manavkapur/Documents/supreme-solutions/supreme-microservices/notification-service"
   }

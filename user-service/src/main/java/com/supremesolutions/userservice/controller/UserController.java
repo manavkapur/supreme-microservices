@@ -59,4 +59,24 @@ public class UserController {
         return ResponseEntity.ok(Map.of("token", token, "userId", user.getId(), "email", user.getEmail()));
     }
 
+    @GetMapping("/verify-token")
+    public ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing token"));
+        }
+
+        String token = authHeader.substring(7);
+        if (JwtUtil.validateToken(token)) {
+            String email = JwtUtil.extractEmail(token);
+            return ResponseEntity.ok(Map.of("valid", true, "email", email));
+        } else {
+            return ResponseEntity.status(401).body(Map.of("valid", false, "error", "Invalid or expired token"));
+        }
+    }
+
+    @GetMapping("/public-key")
+    public ResponseEntity<?> getPublicKey() {
+        return ResponseEntity.ok(Map.of("key", "supreme-solutions-secret-key-9876543210@#jwt"));
+    }
+
 }
