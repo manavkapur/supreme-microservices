@@ -10,17 +10,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // ✅ clients can subscribe to "/topic/..." channels
-        config.enableSimpleBroker("/topic");
-        // ✅ clients will send messages to "/app/..." endpoints
+        // ✅ include both public and user destinations
+        config.enableSimpleBroker("/topic", "/queue", "/user");
         config.setApplicationDestinationPrefixes("/app");
+
+        // ✅ this is critical — ensures convertAndSendToUser() resolves to /user/<username>/...
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // ✅ WebSocket endpoint clients connect to
         registry.addEndpoint("/ws")
+                .addInterceptors(new UserHandshakeInterceptor())
                 .setAllowedOrigins("http://localhost:3000")
-                .withSockJS(); // fallback for browsers
+                .setHandshakeHandler(new UserHandshakeHandler()) // 👈 Add this
+                .withSockJS();
     }
 }
