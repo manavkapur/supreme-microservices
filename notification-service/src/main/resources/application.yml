@@ -18,3 +18,7 @@ eureka:
     hostname: localhost
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
+
+jwt:
+  secret: supreme-solutions-secret-key-9876543210@#jwt
+

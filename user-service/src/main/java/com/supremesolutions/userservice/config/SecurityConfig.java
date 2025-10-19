@@ -11,13 +11,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for Postman testing
+                .cors(cors -> cors.disable()) // ❌ remove this later if needed
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/register-fcm", "/api/users/fcm-token/**").permitAll() // allow public
-                        .anyRequest().permitAll() // TEMP: allow all routes while developing
+                        .requestMatchers(
+                                "/api/users/register",
+                                "/api/users/login",
+                                "/api/users/register-fcm",
+                                "/api/users/fcm-token/**",
+                                "/api/users/verify-token",
+                                "/actuator/**"
+                        ).permitAll()
+                        .anyRequest().permitAll()
                 )
-                .httpBasic(httpBasic -> {}); // disable login popup
-
+                .httpBasic(httpBasic -> {});
         return http.build();
     }
 }
