@@ -18,10 +18,10 @@ public class NotificationController {
 
     // ✅ Fallback for offline users → Called by Channel Server
     @PostMapping("/mobile")
-    public String sendMobileNotification(@RequestBody Map<String, String> payload) {
-        String username = payload.get("username");
-        String title = payload.get("title");
-        String message = payload.get("message");
+    public String sendMobileNotification(@RequestBody Map<String, Object> payload) {
+        String username = String.valueOf(payload.getOrDefault("username", "guest"));
+        String title = String.valueOf(payload.getOrDefault("title", "📲 Notification"));
+        String message = String.valueOf(payload.getOrDefault("message", "New notification"));
 
         System.out.println("📲 Mobile notification request received:");
         System.out.println("   User: " + username);
@@ -29,8 +29,8 @@ public class NotificationController {
         System.out.println("   Message: " + message);
 
         try {
-            // You can enhance this: fetch user FCM token from User Service
-            // Example: token lookup by username → GET /api/users/fcm-token/{username}
+            // 🧠 Future improvement: Fetch real FCM token from User Service
+            // Example: token lookup → GET /api/users/fcm-token/{username}
             String mockToken = "sample_device_token"; // Placeholder for now
 
             Message fcmMessage = Message.builder()
@@ -41,7 +41,7 @@ public class NotificationController {
                             .build())
                     .build();
 
-            // ✅ Uncomment once Firebase key configured
+            // ✅ Uncomment when Firebase is fully configured
             // String response = FirebaseMessaging.getInstance().send(fcmMessage);
             // System.out.println("✅ FCM push sent: " + response);
 

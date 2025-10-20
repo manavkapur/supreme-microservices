@@ -31,11 +31,11 @@ public class RedisEventSubscriber implements MessageListener {
         try {
             JSONObject json = new JSONObject(body);
             String username = json.optString("username", null);
-            String messageText = json.optString("message", "New notification");
+            String eventType = json.optString("event", "");
 
             switch (channel) {
-                case "contact-updates" -> handleContactEvent(username, messageText);
-                case "quote-events" -> handleQuoteEvent(username, messageText);
+                case "contact-updates" -> handleContactEvent(username, json);
+                case "quote-events" -> handleQuoteEvent(username, json, eventType);
                 default -> System.out.println("⚠️ Unhandled channel: " + channel);
             }
 
@@ -43,29 +43,47 @@ public class RedisEventSubscriber implements MessageListener {
             System.err.println("❌ Failed to parse Redis message: " + e.getMessage());
         }
     }
-
-    private void handleContactEvent(String username, String message) {
+    // -----------------------------------------------
+    // CONTACT EVENTS
+    // -----------------------------------------------
+    private void handleContactEvent(String username, JSONObject json) {
+        String message = json.optString("message", "New contact received");
         System.out.println("📞 Handling contact event for " + username);
 
-        // Broadcast to admin dashboards
         messagingTemplate.convertAndSend("/topic/admins", message);
         messagingTemplate.convertAndSend("/topic/contacts", message);
 
-        // Send to user (either via WebSocket or fallback)
         sendToUser(username, "📩 New Contact Form Received", message);
     }
 
-    private void handleQuoteEvent(String username, String message) {
-        System.out.println("💰 Handling quote event for " + username);
+    // -----------------------------------------------
+    // QUOTE EVENTS
+    // -----------------------------------------------
+    private void handleQuoteEvent(String username, JSONObject json, String eventType) {
+        String displayMessage;
+
+        if ("quote.created".equals(eventType)) {
+            displayMessage = json.optString("message", "Your quote was created successfully.");
+        } else if ("quote.updated".equals(eventType)) {
+            String status = json.optString("status", "Updated");
+            displayMessage = "Your quote status is now: " + status;
+        } else {
+            displayMessage = "New quote event received.";
+        }
+
+        System.out.println("💰 Handling quote event for " + username + " → " + displayMessage);
 
         // Broadcast to admins
-        messagingTemplate.convertAndSend("/topic/admins", message);
-        messagingTemplate.convertAndSend("/topic/quotes", message);
+        messagingTemplate.convertAndSend("/topic/admins", displayMessage);
+        messagingTemplate.convertAndSend("/topic/quotes", displayMessage);
 
-        // Send to user (either via WebSocket or fallback)
-        sendToUser(username, "📄 Quote Status Update", message);
+        // Send to user
+        sendToUser(username, "📄 Quote Status Update", displayMessage);
     }
 
+    // -----------------------------------------------
+    // SHARED LOGIC
+    // -----------------------------------------------
     private void sendToUser(String username, String title, String message) {
         if (username == null) {
             System.out.println("⚠️ No username specified in event");

@@ -18,7 +18,14 @@ public class QuoteService {
     private final QuoteRepository quoteRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public Quote createQuote(Quote quote) {
+    public Quote createQuote(Quote quote, String username) {
+        if (username != null) {
+            quote.setUserId(0L); // optional field, keep if needed
+            log.info("📄 Quote submitted by user: {}", username);
+        } else {
+            log.info("📄 Quote submitted by guest user");
+        }
+
         quote.setStatus("Pending");
         Quote saved = quoteRepository.save(quote);
 
@@ -28,13 +35,14 @@ public class QuoteService {
         event.put("name", saved.getName());
         event.put("email", saved.getEmail());
         event.put("message", saved.getMessage());
-        redisTemplate.convertAndSend("quote-events", event);
+        event.put("username", username != null ? username : "guest");
 
-        log.info("Published quote.created event: {}", event);
+        redisTemplate.convertAndSend("quote-events", event);
+        log.info("📢 Published quote.created event: {}", event);
         return saved;
     }
 
-    public Quote updateStatus(Long id, String status) {
+    public Quote updateStatus(Long id, String status, String username) {
         Quote quote = quoteRepository.findById(id).orElseThrow();
         quote.setStatus(status);
         Quote updated = quoteRepository.save(quote);
@@ -44,9 +52,10 @@ public class QuoteService {
         event.put("quoteId", updated.getId());
         event.put("email", updated.getEmail());
         event.put("status", updated.getStatus());
-        redisTemplate.convertAndSend("quote-events", event);
+        event.put("username", username != null ? username : "guest");
 
-        log.info("Published quote.updated event: {}", event);
+        redisTemplate.convertAndSend("quote-events", event);
+        log.info("📢 Published quote.updated event: {}", event);
         return updated;
     }
 }
