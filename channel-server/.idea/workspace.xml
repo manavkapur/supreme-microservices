@@ -5,20 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/CustomHandshakeHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/config/CorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/service/ActiveUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/service/NotificationForwarder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/websocket/WebSocketEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/config/JwtFilterConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/security/JwtRequestFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/security/JwtService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/StompAuthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/StompAuthInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/WebSocketConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/controller/ContactController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/controller/ContactController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/dto/ContactEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/dto/ContactEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/service/ContactService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/java/com/supremesolutions/contact/service/ContactService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/UserHandshakeInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/UserHandshakeInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/config/WebSocketConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />

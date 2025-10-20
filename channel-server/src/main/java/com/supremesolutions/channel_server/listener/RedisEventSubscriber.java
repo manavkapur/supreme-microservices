@@ -1,11 +1,13 @@
 package com.supremesolutions.channel_server.listener;
 
+import com.supremesolutions.channel_server.service.ActiveUserService;
+import com.supremesolutions.channel_server.service.NotificationForwarder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.json.JSONObject;
 
 @Component
 public class RedisEventSubscriber implements MessageListener {
@@ -14,7 +16,10 @@ public class RedisEventSubscriber implements MessageListener {
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private ActiveUserService activeUserService;
+
+    @Autowired
+    private NotificationForwarder notificationForwarder;
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
@@ -23,39 +28,56 @@ public class RedisEventSubscriber implements MessageListener {
 
         System.out.println("📩 Redis Event Received: [" + channel + "] -> " + body);
 
-        switch (channel) {
-            case "contact-updates" -> handleContactEvent(body);
-            case "quote-events" -> handleQuoteEvent(body);
-            default -> System.out.println("⚠️ Unhandled channel: " + channel);
+        try {
+            JSONObject json = new JSONObject(body);
+            String username = json.optString("username", null);
+            String messageText = json.optString("message", "New notification");
+
+            switch (channel) {
+                case "contact-updates" -> handleContactEvent(username, messageText);
+                case "quote-events" -> handleQuoteEvent(username, messageText);
+                default -> System.out.println("⚠️ Unhandled channel: " + channel);
+            }
+
+        } catch (Exception e) {
+            System.err.println("❌ Failed to parse Redis message: " + e.getMessage());
         }
     }
 
-    private void handleContactEvent(String body) {
-        // 1️⃣ Broadcast to all connected admin dashboards via WebSocket
-        messagingTemplate.convertAndSend("/topic/admin", body);
-        messagingTemplate.convertAndSend("/topic/contacts", body);
+    private void handleContactEvent(String username, String message) {
+        System.out.println("📞 Handling contact event for " + username);
 
-        // 2️⃣ Also publish a simpler notification event for Notification Service
-        String notificationJson = String.format(
-                "{\"type\":\"CONTACT_ALERT\",\"message\":\"New contact received\",\"body\":%s}",
-                body
-        );
-        redisTemplate.convertAndSend("notification-events", notificationJson);
+        // Broadcast to admin dashboards
+        messagingTemplate.convertAndSend("/topic/admins", message);
+        messagingTemplate.convertAndSend("/topic/contacts", message);
 
-        System.out.println("📡 Sent contact alert → /topic/admin and Redis(notification-events)");
+        // Send to user (either via WebSocket or fallback)
+        sendToUser(username, "📩 New Contact Form Received", message);
     }
 
-    private void handleQuoteEvent(String body) {
-        // 1️⃣ Broadcast to all dashboards subscribed to /topic/quotes
-        messagingTemplate.convertAndSend("/topic/quotes", body);
+    private void handleQuoteEvent(String username, String message) {
+        System.out.println("💰 Handling quote event for " + username);
 
-        // 2️⃣ Publish notification event for Notification Service (for FCM or admin)
-        String notificationJson = String.format(
-                "{\"type\":\"QUOTE_UPDATE\",\"message\":\"Quote updated\",\"body\":%s}",
-                body
-        );
-        redisTemplate.convertAndSend("notification-events", notificationJson);
+        // Broadcast to admins
+        messagingTemplate.convertAndSend("/topic/admins", message);
+        messagingTemplate.convertAndSend("/topic/quotes", message);
 
-        System.out.println("📡 Sent quote update → /topic/quotes and Redis(notification-events)");
+        // Send to user (either via WebSocket or fallback)
+        sendToUser(username, "📄 Quote Status Update", message);
+    }
+
+    private void sendToUser(String username, String title, String message) {
+        if (username == null) {
+            System.out.println("⚠️ No username specified in event");
+            return;
+        }
+
+        if (activeUserService.isOnline(username)) {
+            System.out.println("🟢 User online → sending WebSocket update");
+            messagingTemplate.convertAndSendToUser(username, "/queue/updates", message);
+        } else {
+            System.out.println("🔴 User offline → sending via Notification Service");
+            notificationForwarder.sendMobileFallback(username, title, message);
+        }
     }
 }
