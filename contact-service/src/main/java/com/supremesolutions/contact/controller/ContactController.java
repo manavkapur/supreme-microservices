@@ -2,6 +2,7 @@ package com.supremesolutions.contact.controller;
 
 import com.supremesolutions.contact.entity.Contact;
 import com.supremesolutions.contact.service.ContactService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,8 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<Contact> submitContact(@RequestBody Contact contact) {
-        Contact saved = service.saveContact(contact);
+    public ResponseEntity<Contact> submitContact(@RequestBody Contact contact, HttpServletRequest request) {
+        Contact saved = service.saveContact(contact, request);
         return ResponseEntity.ok(saved);
     }
 }
