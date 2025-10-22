@@ -3,18 +3,20 @@ spring:
     name: email-service
 
   mail:
-    host: smtp.gmail.com
+    host: smtp.zoho.in
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: info@supremebuildsolutions.com
+    password: J8ysjYByKxki
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-          ssl:
-            trust: smtp.gmail.com
+            required: true
+        ssl:
+          trust: smtp.zoho.in
+
 
   redis:
     host: localhost

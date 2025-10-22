@@ -19,6 +19,7 @@ public class RedisConfig {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("contact-events"));
+        container.addMessageListener(listenerAdapter, new PatternTopic("contact-updates")); // ✅ Add this
         container.addMessageListener(listenerAdapter, new PatternTopic("quote-events"));
         return container;
     }

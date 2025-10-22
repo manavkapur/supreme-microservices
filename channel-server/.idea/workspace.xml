@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/config/JwtFilterConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtRequestFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/config/CorsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../email-service/src/main/java/com/supremesolutions/emailservice/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../email-service/src/main/java/com/supremesolutions/emailservice/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../email-service/src/main/java/com/supremesolutions/emailservice/listener/EmailEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../email-service/src/main/java/com/supremesolutions/emailservice/listener/EmailEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../email-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../email-service/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../notification-service/src/main/java/com/supremesolutions/notificationservice/controller/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/controller/QuoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/controller/QuoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/QuoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/QuoteService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
