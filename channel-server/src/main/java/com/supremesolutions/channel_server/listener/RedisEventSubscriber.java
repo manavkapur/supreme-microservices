@@ -2,12 +2,12 @@ package com.supremesolutions.channel_server.listener;
 
 import com.supremesolutions.channel_server.service.ActiveUserService;
 import com.supremesolutions.channel_server.service.NotificationForwarder;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-import org.json.JSONObject;
 
 @Component
 public class RedisEventSubscriber implements MessageListener {
@@ -33,6 +33,10 @@ public class RedisEventSubscriber implements MessageListener {
             String username = json.optString("username", null);
             String eventType = json.optString("event", "");
 
+            // Ensure consistency
+            json.put("source", channel);
+            json.put("timestamp", System.currentTimeMillis());
+
             switch (channel) {
                 case "contact-updates" -> handleContactEvent(username, json);
                 case "quote-events" -> handleQuoteEvent(username, json, eventType);
@@ -43,59 +47,60 @@ public class RedisEventSubscriber implements MessageListener {
             System.err.println("❌ Failed to parse Redis message: " + e.getMessage());
         }
     }
+
     // -----------------------------------------------
-    // CONTACT EVENTS
+    // CONTACT EVENTS (now sends full JSON)
     // -----------------------------------------------
     private void handleContactEvent(String username, JSONObject json) {
-        String message = json.optString("message", "New contact received");
-        System.out.println("📞 Handling contact event for " + username);
+        System.out.println("📞 Handling contact event for " + username + " → " + json.toString(2));
 
-        messagingTemplate.convertAndSend("/topic/admins", message);
-        messagingTemplate.convertAndSend("/topic/contacts", message);
+        // Broadcast JSON to admins and contact dashboard
+        messagingTemplate.convertAndSend("/topic/admins", json.toString());
+        messagingTemplate.convertAndSend("/topic/contacts", json.toString());
 
-        sendToUser(username, "📩 New Contact Form Received", message);
+        // Send JSON to specific user (if logged in)
+        sendToUser(username, "📩 New Contact Form Received", json.toString());
     }
 
     // -----------------------------------------------
-    // QUOTE EVENTS
+    // QUOTE EVENTS (now sends full JSON)
     // -----------------------------------------------
     private void handleQuoteEvent(String username, JSONObject json, String eventType) {
-        String displayMessage;
+        System.out.println("💰 Handling quote event for " + username + " → " + json.toString(2));
 
-        if ("quote.created".equals(eventType)) {
-            displayMessage = json.optString("message", "Your quote was created successfully.");
-        } else if ("quote.updated".equals(eventType)) {
-            String status = json.optString("status", "Updated");
-            displayMessage = "Your quote status is now: " + status;
-        } else {
-            displayMessage = "New quote event received.";
-        }
+        // Send JSON to admin topics
+        messagingTemplate.convertAndSend("/topic/admins", json.toString());
+        messagingTemplate.convertAndSend("/topic/quotes", json.toString());
 
-        System.out.println("💰 Handling quote event for " + username + " → " + displayMessage);
-
-        // Broadcast to admins
-        messagingTemplate.convertAndSend("/topic/admins", displayMessage);
-        messagingTemplate.convertAndSend("/topic/quotes", displayMessage);
-
-        // Send to user
-        sendToUser(username, "📄 Quote Status Update", displayMessage);
+        // Send structured JSON to user WebSocket
+        sendToUser(username, "📄 Quote Status Update", json.toString());
     }
 
     // -----------------------------------------------
-    // SHARED LOGIC
+    // SHARED LOGIC (now sends structured JSON)
     // -----------------------------------------------
-    private void sendToUser(String username, String title, String message) {
+    private void sendToUser(String username, String title, String messageJson) {
         if (username == null) {
             System.out.println("⚠️ No username specified in event");
             return;
         }
 
-        if (activeUserService.isOnline(username)) {
-            System.out.println("🟢 User online → sending WebSocket update");
-            messagingTemplate.convertAndSendToUser(username, "/queue/updates", message);
-        } else {
-            System.out.println("🔴 User offline → sending via Notification Service");
-            notificationForwarder.sendMobileFallback(username, title, message);
+        try {
+            JSONObject json = new JSONObject(messageJson);
+
+            if (activeUserService.isOnline(username)) {
+                System.out.println("🟢 User online → sending structured JSON update");
+                System.out.println("📨 Sending to STOMP destination: /user/" + username + "/queue/updates");
+
+                // 🔥 FIX: use convertAndSend (not convertAndSendToUser)
+                messagingTemplate.convertAndSend("/user/" + username + "/queue/updates", messageJson);
+
+            } else {
+                System.out.println("🔴 User offline → forwarding to Notification Service");
+                notificationForwarder.sendMobileFallback(username, title, messageJson);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Failed to send structured event: " + e.getMessage());
         }
     }
 }

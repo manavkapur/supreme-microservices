@@ -29,11 +29,12 @@ public class StompAuthInterceptor implements ChannelInterceptor {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
                 if (jwtService.validateToken(token)) {
-                    String username = jwtService.extractUsername(token);
+                    // ✅ Always normalize username to lowercase
+                    String username = jwtService.extractUsername(token).toLowerCase();
 
-                    // Attach username to WebSocket session for later use
+                    // Attach normalized username to session
                     accessor.setUser(() -> username);
-                    accessor.getSessionAttributes().put("username", username); // 👈 Important line
+                    accessor.getSessionAttributes().put("username", username);
 
                     activeUserService.addUser(username);
                     System.out.println("🔐 Authenticated WS: " + username);
@@ -51,12 +52,15 @@ public class StompAuthInterceptor implements ChannelInterceptor {
         if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
             Object usernameObj = accessor.getSessionAttributes().get("username");
             if (usernameObj != null) {
-                String username = usernameObj.toString();
+                String username = usernameObj.toString().toLowerCase();
                 activeUserService.removeUser(username);
                 System.out.println("❌ Disconnected via STOMP: " + username);
             }
         }
+        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
+            System.out.println("🧠 Principal assigned to session: " + accessor.getUser().getName());
+        }
         return message;
     }
 }
