@@ -1,41 +1,48 @@
 package com.supremesolutions.userservice.util;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.Map;
 
 public class JwtUtil {
+    private static final String SECRET_KEY = "supreme-solutions-secret-key-9876543210@#jwt"; // keep readable
+    private static final long EXPIRATION_MS = 86400000; // 1 day
 
-    private static final String SECRET = "supreme-solutions-secret-key-9876543210@#jwt"; // ✅ Fixed secret
-    private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
-
-    public static String generateToken(String email) {
+    public static String generateToken(String email, String role, Long userId) {
         return Jwts.builder()
                 .setSubject(email)
+                .addClaims(Map.of(
+                        "role", role,
+                        "userId", userId
+                ))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes()) // ✅ fixed here
                 .compact();
     }
 
     public static String extractEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes()) // ✅ also fix parser
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
+    public static String extractRole(String token) {
+        return (String) Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role");
+    }
+
     public static boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
+        } catch (Exception e) {
             return false;
         }
     }

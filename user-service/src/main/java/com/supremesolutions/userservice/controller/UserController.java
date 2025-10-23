@@ -55,8 +55,14 @@ public class UserController {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
         }
 
-        String token = JwtUtil.generateToken(email);
-        return ResponseEntity.ok(Map.of("token", token, "userId", user.getId(), "email", user.getEmail()));
+        String token = JwtUtil.generateToken(user.getEmail(), user.getRole(), user.getId());
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "userId", user.getId(),
+                "email", user.getEmail(),
+                "role", user.getRole()
+        ));
+
     }
 
     @GetMapping("/verify-token")

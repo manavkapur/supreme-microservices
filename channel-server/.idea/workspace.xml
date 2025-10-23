@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/StompAuthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/config/StompAuthInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/controller/EventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/supremesolutions/channel_server/listener/RedisEventSubscriber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/QuoteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/QuoteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user-service/src/main/java/com/supremesolutions/userservice/util/JwtUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -20,7 +20,7 @@ public class User {
     private String email;
 
     private String password;
-    private String role; // USER or ADMIN
+    private String role = "USER"; // default
 
     private String fcmToken;
 }
