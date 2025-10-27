@@ -43,8 +43,8 @@ public class QuoteService {
         quote.setStatus(status);
         Quote updated = quoteRepository.save(quote);
 
-        // Publish update event
-        publishEvent("quote.updated", updated, username);
+        // ✅ Use quote.getEmail() instead of admin username
+        publishEvent("quote.updated", updated, quote.getEmail());
         return updated;
     }
 
@@ -56,11 +56,13 @@ public class QuoteService {
         event.put("email", quote.getEmail());
         event.put("message", quote.getMessage());
         event.put("status", quote.getStatus());
-        event.put("username", username != null ? username : "guest");
+        event.put("username", quote.getEmail()); // 👈 Force username = quote owner
+        event.put("admin", username);            // 👈 Store who performed the action (optional)
         event.put("source", "quote-events");
         event.put("timestamp", System.currentTimeMillis());
 
         redisTemplate.convertAndSend("quote-events", event);
         log.info("📢 Published Redis Event → {} : {}", eventType, event);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.supremesolutions.quote_service.security;
+package com.supremesolutions.quote_service.service;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

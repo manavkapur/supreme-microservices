@@ -10,7 +10,7 @@ import java.io.IOException;
 public class JwtRequestFilter implements Filter {
 
     @Autowired
-    private com.supremesolutions.quote_service.security.JwtService jwtService;
+    private com.supremesolutions.quote_service.service.JwtService jwtService;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
