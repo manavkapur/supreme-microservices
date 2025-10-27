@@ -33,15 +33,20 @@ public class RedisEventSubscriber implements MessageListener {
             String username = json.optString("username", null);
             String eventType = json.optString("event", "");
 
-            // Ensure consistency
+            // Normalize
             json.put("source", channel);
             json.put("timestamp", System.currentTimeMillis());
 
+            // ✅ Handle per channel
             switch (channel) {
                 case "contact-updates" -> handleContactEvent(username, json);
                 case "quote-events" -> handleQuoteEvent(username, json, eventType);
                 default -> System.out.println("⚠️ Unhandled channel: " + channel);
             }
+
+            // ✅ NEW: Broadcast all incoming events to unified admin topic
+            messagingTemplate.convertAndSend("/topic/admin/updates", json.toMap());
+            System.out.println("🧭 Sent unified admin update → /topic/admin/updates");
 
         } catch (Exception e) {
             System.err.println("❌ Failed to parse Redis message: " + e.getMessage());
@@ -49,12 +54,12 @@ public class RedisEventSubscriber implements MessageListener {
     }
 
     // -----------------------------------------------
-    // CONTACT EVENTS (now sends full JSON)
+    // CONTACT EVENTS
     // -----------------------------------------------
     private void handleContactEvent(String username, JSONObject json) {
         System.out.println("📞 Handling contact event for " + username + " → " + json.toString(2));
 
-        // Broadcast JSON to admins and contact dashboard
+        // Broadcast JSON to legacy topics (optional)
         messagingTemplate.convertAndSend("/topic/admins", json.toString());
         messagingTemplate.convertAndSend("/topic/contacts", json.toString());
 
@@ -63,12 +68,12 @@ public class RedisEventSubscriber implements MessageListener {
     }
 
     // -----------------------------------------------
-    // QUOTE EVENTS (now sends full JSON)
+    // QUOTE EVENTS
     // -----------------------------------------------
     private void handleQuoteEvent(String username, JSONObject json, String eventType) {
         System.out.println("💰 Handling quote event for " + username + " → " + json.toString(2));
 
-        // Send JSON to admin topics
+        // Broadcast to legacy topics
         messagingTemplate.convertAndSend("/topic/admins", json.toString());
         messagingTemplate.convertAndSend("/topic/quotes", json.toString());
 
@@ -77,7 +82,7 @@ public class RedisEventSubscriber implements MessageListener {
     }
 
     // -----------------------------------------------
-    // SHARED LOGIC (now sends structured JSON)
+    // SHARED LOGIC
     // -----------------------------------------------
     private void sendToUser(String username, String title, String messageJson) {
         if (username == null) {
@@ -92,9 +97,8 @@ public class RedisEventSubscriber implements MessageListener {
                 System.out.println("🟢 User online → sending structured JSON update");
                 System.out.println("📨 Sending to STOMP destination: /user/" + username + "/queue/updates");
 
-                // 🔥 FIX: use convertAndSend (not convertAndSendToUser)
-                messagingTemplate.convertAndSend("/user/" + username + "/queue/updates", messageJson);
-
+                // 🔥 use convertAndSend (to user queue)
+                messagingTemplate.convertAndSend("/user/" + username + "/queue/updates", json.toMap());
             } else {
                 System.out.println("🔴 User offline → forwarding to Notification Service");
                 notificationForwarder.sendMobileFallback(username, title, messageJson);

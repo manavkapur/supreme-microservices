@@ -19,63 +19,48 @@ public class QuoteService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     public Quote createQuote(Quote quote, String username) {
-        // ✅ Normalize username + email to lowercase
-        if (username != null) {
+        if (username != null)
             username = username.toLowerCase();
-            quote.setUserId(0L); // optional: link to actual user if available
-            log.info("📄 Quote submitted by user: {}", username);
-        } else {
-            log.info("📄 Quote submitted by guest user");
-        }
-
-        if (quote.getEmail() != null) {
-            quote.setEmail(quote.getEmail().toLowerCase());
-        }
 
         quote.setStatus("Pending");
+        quote.setEmail(quote.getEmail() != null ? quote.getEmail().toLowerCase() : null);
+
         Quote saved = quoteRepository.save(quote);
 
-        // 📨 Publish event for new quote
-        Map<String, Object> event = new HashMap<>();
-        event.put("event", "quote.created");
-        event.put("quoteId", saved.getId());
-        event.put("name", saved.getName());
-        event.put("email", saved.getEmail());
-        event.put("message", saved.getMessage());
-        event.put("status", saved.getStatus());
-        event.put("username", username != null ? username.toLowerCase() : "guest");
-
-
-        redisTemplate.convertAndSend("quote-events", event);
-        log.info("📢 Published quote.created event: {}", event);
+        // Publish new quote event
+        publishEvent("quote.created", saved, username);
 
         return saved;
     }
 
     public Quote updateStatus(Long id, String status, String username) {
-        // ✅ Normalize username
-        if (username != null) {
+        if (username != null)
             username = username.toLowerCase();
-        }
 
-        Quote quote = quoteRepository.findById(id).orElseThrow();
+        Quote quote = quoteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Quote not found"));
+
         quote.setStatus(status);
         Quote updated = quoteRepository.save(quote);
 
-        // 📨 Publish event for status update
-        Map<String, Object> event = new HashMap<>();
-        event.put("event", "quote.updated");
-        event.put("quoteId", updated.getId());
-        event.put("name", updated.getName());
-        event.put("email", updated.getEmail() != null ? updated.getEmail().toLowerCase() : null);
-        event.put("message", updated.getMessage());
-        event.put("status", updated.getStatus());
-        event.put("username", username != null ? username.toLowerCase() : "guest");
+        // Publish update event
+        publishEvent("quote.updated", updated, username);
+        return updated;
+    }
 
+    private void publishEvent(String eventType, Quote quote, String username) {
+        Map<String, Object> event = new HashMap<>();
+        event.put("event", eventType);
+        event.put("quoteId", quote.getId());
+        event.put("name", quote.getName());
+        event.put("email", quote.getEmail());
+        event.put("message", quote.getMessage());
+        event.put("status", quote.getStatus());
+        event.put("username", username != null ? username : "guest");
+        event.put("source", "quote-events");
+        event.put("timestamp", System.currentTimeMillis());
 
         redisTemplate.convertAndSend("quote-events", event);
-        log.info("📢 Published quote.updated event: {}", event);
-
-        return updated;
+        log.info("📢 Published Redis Event → {} : {}", eventType, event);
     }
 }

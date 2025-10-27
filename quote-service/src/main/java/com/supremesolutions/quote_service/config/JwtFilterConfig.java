@@ -1,6 +1,6 @@
 package com.supremesolutions.quote_service.config;
 
-import com.supremesolutions.quote_service.security.JwtRequestFilter;
+import com.supremesolutions.quote_service.service.JwtRequestFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

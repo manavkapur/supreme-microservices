@@ -1,4 +1,4 @@
-package com.supremesolutions.quote_service.security;
+package com.supremesolutions.quote_service.service;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.io.IOException;
 public class JwtRequestFilter implements Filter {
 
     @Autowired
-    private JwtService jwtService;
+    private com.supremesolutions.quote_service.security.JwtService jwtService;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
