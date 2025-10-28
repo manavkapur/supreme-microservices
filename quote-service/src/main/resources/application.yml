@@ -1,35 +1,41 @@
+server:
+  port: 8087
+
 spring:
   application:
     name: quote-service
 
+  # ---------- DATABASE (Neon Postgres via env vars) ----------
   datasource:
-    url: jdbc:mysql://localhost:3306/quote_service_db
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/quote_service_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    hikari:
+      maximum-pool-size: ${SPRING_DATASOURCE_MAX_POOL:10}
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
-server:
-  port: 8087
+  # ---------- REDIS (Upstash) ----------
+  # Use spring.redis (not spring.data.redis) so Spring Boot binds simple props
+  redis:
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
+    password: ${SPRING_REDIS_PASSWORD:}
+    ssl: ${SPRING_REDIS_SSL:false}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_HOSTNAME:localhost}
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
 

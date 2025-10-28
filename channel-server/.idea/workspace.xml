@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6678ef8c-e7bb-43ce-a85a-1a948218c931" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtRequestFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtRequestFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../quote-service/src/main/java/com/supremesolutions/quote_service/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../contact-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
